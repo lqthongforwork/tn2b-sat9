@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Festival Fun! 🎉 English Lesson</title>
+<style>
+/* ============ DESIGN TOKENS ============ */
+:root{
+  --purple:#7C3AED;
+  --pink:#EC4899;
+  --sun:#FBBF24;
+  --teal:#14B8A6;
+  --coral:#FB7185;
+  --sky:#38BDF8;
+  --lime:#84CC16;
+  --ink:#2A1A4A;
+  --paper:#FFF7F0;
+  --card:#FFFFFF;
+  --soft:#F3E8FF;
+  --shadow:0 10px 0 rgba(124,58,237,.18), 0 18px 30px rgba(124,58,237,.18);
+  --radius:26px;
+  --fs:1; /* font scale */
+  --good:#16A34A;
+  --bad:#EF4444;
+  --bunting1:var(--coral); --bunting2:var(--sun); --bunting3:var(--teal); --bunting4:var(--sky); --bunting5:var(--pink);
+}
+/* Dark mode */
+body.dark{
+  --paper:#1B1430; --card:#2A2046; --ink:#F4EBFF; --soft:#3A2C5E;
+  --shadow:0 10px 0 rgba(0,0,0,.35), 0 18px 30px rgba(0,0,0,.45);
+}
+/* High contrast */
+body.contrast{
+  --paper:#000; --card:#000; --ink:#FFF; --soft:#111; --purple:#FFE600; --pink:#FF4DD2;
+  --sun:#FFE600; --teal:#00FFD0; --sky:#46C2FF; --coral:#FF7A7A; --good:#4DFF7A; --bad:#FF6B6B;
+  --shadow:0 0 0 3px #FFF;
+}
+body.contrast .card, body.contrast .btn, body.contrast .topbar{border:3px solid #fff;}
+
+/* Font scale classes */
+html.fs-s{--fs:.9} html.fs-m{--fs:1} html.fs-l{--fs:1.15} html.fs-xl{--fs:1.32}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Trebuchet MS','Segoe UI Rounded','Comic Sans MS','Chalkboard SE',system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(236,72,153,.18), transparent 40%),
+    radial-gradient(circle at 88% 12%, rgba(56,189,248,.18), transparent 42%),
+    radial-gradient(circle at 50% 100%, rgba(251,191,36,.18), transparent 45%),
+    var(--paper);
+  color:var(--ink);
+  font-size:calc(18px * var(--fs));
+  line-height:1.5;
+  min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+  overflow-x:hidden;
+}
+h1,h2,h3{line-height:1.15;margin:.2em 0;}
+button{font-family:inherit;cursor:pointer;}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;}}
+
+/* ============ BUNTING ============ */
+.bunting{display:flex;justify-content:center;gap:0;height:34px;overflow:hidden;filter:drop-shadow(0 3px 2px rgba(0,0,0,.12));}
+.bunting i{width:34px;height:30px;clip-path:polygon(0 0,100% 0,50% 100%);display:inline-block;margin:0 1px;animation:flap 3s ease-in-out infinite;}
+.bunting i:nth-child(5n+1){background:var(--bunting1)}
+.bunting i:nth-child(5n+2){background:var(--bunting2)}
+.bunting i:nth-child(5n+3){background:var(--bunting3)}
+.bunting i:nth-child(5n+4){background:var(--bunting4)}
+.bunting i:nth-child(5n+5){background:var(--bunting5)}
+.bunting i:nth-child(odd){animation-delay:.4s}
+@keyframes flap{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(3px) scaleY(.94)}}
+
+/* ============ TOP BAR ============ */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:10px 16px;
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.2);
+}
+.brand{font-weight:bold;font-size:1.15em;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.brand .logo{animation:spin 6s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.top-stats{display:flex;gap:8px;align-items:center;margin-left:auto;flex-wrap:wrap;}
+.chip{background:rgba(255,255,255,.22);padding:5px 12px;border-radius:999px;font-weight:bold;font-size:.85em;white-space:nowrap;}
+.progress-wrap{flex:1 1 140px;min-width:120px;height:16px;background:rgba(255,255,255,.3);border-radius:999px;overflow:hidden;}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--sun),var(--lime));border-radius:999px;transition:width .5s ease;}
+.gear{background:rgba(255,255,255,.22);border:none;color:#fff;font-size:1.2em;width:42px;height:42px;border-radius:14px;}
+.gear:hover{background:rgba(255,255,255,.4);}
+
+/* settings panel */
+.settings{
+  position:fixed;top:0;right:-340px;width:320px;max-width:90vw;height:100%;z-index:100;
+  background:var(--card);color:var(--ink);box-shadow:-10px 0 40px rgba(0,0,0,.3);
+  padding:18px;transition:right .35s cubic-bezier(.3,1.2,.5,1);overflow-y:auto;
+}
+.settings.open{right:0;}
+.settings h3{margin-top:0;}
+.settings .row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px;}
+.settings .lab{font-weight:bold;display:block;margin-bottom:4px;font-size:.95em;}
+.optbtn{border:3px solid var(--soft);background:var(--card);color:var(--ink);padding:8px 12px;border-radius:14px;font-weight:bold;font-size:.85em;}
+.optbtn.active{background:var(--purple);color:#fff;border-color:var(--purple);}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90;display:none;}
+.overlay.show{display:block;}
+.closeX{position:absolute;top:12px;right:12px;border:none;background:var(--bad);color:#fff;width:36px;height:36px;border-radius:50%;font-size:1.1em;font-weight:bold;}
+
+/* lesson map menu */
+.navmenu{position:fixed;top:0;left:-360px;width:330px;max-width:90vw;height:100%;z-index:100;background:var(--card);color:var(--ink);box-shadow:10px 0 40px rgba(0,0,0,.3);padding:18px;transition:left .35s cubic-bezier(.3,1.2,.5,1);overflow-y:auto;}
+.navmenu.open{left:0;}
+.navlist{display:grid;gap:10px;margin-top:12px;}
+.navitem{display:flex;align-items:center;gap:12px;border:4px solid var(--soft);background:var(--card);color:var(--ink);border-radius:18px;padding:12px 14px;font-weight:bold;font-size:1em;text-align:left;transition:transform .1s,border-color .2s;}
+.navitem:hover{transform:translateX(5px);border-color:var(--purple);}
+.navitem .ne{font-size:1.8em;line-height:1;}
+.navitem .nn{flex:1;}
+.navitem .nck{color:var(--good);font-size:1.3em;}
+.navitem.now{border-color:var(--pink);background:var(--soft);}
+.navitem.done{border-color:var(--good);}
+body.contrast .navmenu,body.contrast .navitem{border:3px solid #fff;}
+
+/* ============ LAYOUT ============ */
+.stage{max-width:920px;margin:0 auto;padding:18px 16px 80px;}
+.section{display:none;animation:pop .5s cubic-bezier(.2,1.3,.4,1);}
+.section.active{display:block;}
+@keyframes pop{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin:16px 0;}
+.kicker{display:inline-block;background:var(--soft);color:var(--purple);font-weight:bold;padding:4px 14px;border-radius:999px;font-size:.8em;letter-spacing:.5px;text-transform:uppercase;}
+body.dark .kicker{color:var(--pink);}
+
+/* ============ BUTTONS ============ */
+.btn{
+  border:none;border-radius:18px;padding:14px 26px;font-size:1.05em;font-weight:bold;color:#fff;
+  background:linear-gradient(180deg,var(--purple),#5B21B6);
+  box-shadow:0 6px 0 #4C1D95;transition:transform .08s, box-shadow .08s, filter .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 #4C1D95;}
+.btn.pink{background:linear-gradient(180deg,var(--pink),#BE185D);box-shadow:0 6px 0 #9D174D;}
+.btn.teal{background:linear-gradient(180deg,var(--teal),#0F766E);box-shadow:0 6px 0 #115E59;}
+.btn.sun{background:linear-gradient(180deg,var(--sun),#D97706);box-shadow:0 6px 0 #B45309;color:#5b3b00;}
+.btn.ghost{background:var(--card);color:var(--purple);box-shadow:0 6px 0 var(--soft);border:3px solid var(--soft);}
+.btn.big{font-size:1.3em;padding:18px 40px;}
+.btn:disabled{filter:grayscale(.6) opacity(.6);cursor:not-allowed;}
+.btn:focus-visible,.optbtn:focus-visible,.gear:focus-visible,.iconbtn:focus-visible{outline:4px solid var(--sky);outline-offset:3px;}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+.iconbtn{border:none;background:var(--soft);color:var(--purple);width:54px;height:54px;border-radius:50%;font-size:1.5em;box-shadow:0 4px 0 rgba(0,0,0,.12);transition:transform .1s;}
+.iconbtn:active{transform:scale(.9);}
+
+/* ============ INTRO ============ */
+.hero{text-align:center;position:relative;}
+.hero .title{font-size:clamp(2.2rem,8vw,4rem);background:linear-gradient(90deg,var(--pink),var(--sun),var(--teal),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(2px 3px 0 rgba(124,58,237,.25));animation:wob 4s ease-in-out infinite;}
+@keyframes wob{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+.hero-emojis{font-size:clamp(2rem,9vw,3.4rem);margin:10px 0;}
+.hero-emojis span{display:inline-block;animation:bob 2.4s ease-in-out infinite;}
+.hero-emojis span:nth-child(2){animation-delay:.2s}
+.hero-emojis span:nth-child(3){animation-delay:.4s}
+.hero-emojis span:nth-child(4){animation-delay:.6s}
+.hero-emojis span:nth-child(5){animation-delay:.8s}
+.hero-emojis span:nth-child(6){animation-delay:1s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.objectives{text-align:left;max-width:520px;margin:18px auto;display:grid;gap:10px;}
+.objectives .obj{display:flex;gap:12px;align-items:center;background:var(--soft);padding:12px 16px;border-radius:18px;font-weight:bold;}
+.objectives .obj .em{font-size:1.6em;}
+
+/* ============ WORD CARDS / FLASHCARD ============ */
+.flash{text-align:center;}
+.flash .pic{font-size:clamp(4.5rem,22vw,8rem);margin:6px 0;animation:bob 3s ease-in-out infinite;display:inline-block;}
+.flash .word{font-size:clamp(1.8rem,7vw,2.6rem);font-weight:bold;color:var(--purple);}
+body.dark .flash .word{color:var(--pink);}
+.flash .ipa{color:var(--teal);font-style:italic;font-weight:bold;}
+.pos{display:inline-block;background:var(--sun);color:#5b3b00;font-weight:bold;padding:3px 12px;border-radius:999px;font-size:.78em;}
+.def{font-size:1.1em;margin:10px auto;max-width:460px;}
+.ex{background:var(--soft);border-radius:16px;padding:12px 16px;max-width:480px;margin:10px auto 0;font-size:1.05em;}
+.ex b{background:linear-gradient(180deg,transparent 55%,var(--sun) 55%);padding:0 3px;border-radius:4px;color:var(--ink);}
+.dots{display:flex;gap:7px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.dots i{width:13px;height:13px;border-radius:50%;background:var(--soft);transition:.2s;}
+.dots i.on{background:var(--pink);transform:scale(1.3);}
+
+/* ============ QUIZ / OPTIONS GRID ============ */
+.qtext{font-size:1.25em;font-weight:bold;text-align:center;margin:6px 0 16px;}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;}
+.opt{
+  border:4px solid var(--soft);background:var(--card);color:var(--ink);border-radius:20px;padding:16px;
+  font-size:1.1em;font-weight:bold;transition:transform .1s, border-color .2s, background .2s;text-align:center;
+}
+.opt .em{font-size:2.4em;display:block;}
+.opt:hover{transform:translateY(-4px) scale(1.02);border-color:var(--purple);}
+.opt.correct{background:var(--good);color:#fff;border-color:var(--good);animation:goodpop .4s;}
+.opt.wrong{background:var(--bad);color:#fff;border-color:var(--bad);animation:shake .4s;}
+.opt:disabled{cursor:default;}
+@keyframes goodpop{50%{transform:scale(1.12)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* feedback banner */
+.fb{min-height:30px;text-align:center;font-weight:bold;font-size:1.15em;margin:14px 0;transition:.2s;}
+.fb.ok{color:var(--good);} .fb.no{color:var(--bad);}
+
+/* ============ MATCH GAME ============ */
+.matchgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(86px,1fr));gap:10px;}
+.tile{aspect-ratio:1;border-radius:18px;border:4px solid var(--soft);background:var(--soft);font-size:2.2em;display:flex;align-items:center;justify-content:center;font-weight:bold;color:transparent;transition:transform .15s;color:var(--ink);}
+.tile.hidden{color:transparent;background:linear-gradient(135deg,var(--purple),var(--pink));}
+.tile.hidden::after{content:"❓";color:#fff;font-size:.8em;}
+.tile.flip{color:var(--ink);background:var(--card);border-color:var(--purple);transform:scale(1.05);}
+.tile.flip::after{content:"";}
+.tile.done{background:var(--good);border-color:var(--good);color:#fff;animation:goodpop .4s;}
+.tile.done::after{content:"";}
+.tile small{font-size:.42em;}
+
+/* ============ UNSCRAMBLE ============ */
+.scramble{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0;min-height:60px;}
+.letter{width:52px;height:58px;border-radius:14px;background:var(--sun);color:#5b3b00;font-size:1.6em;font-weight:bold;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 #B45309;transition:transform .1s;}
+.letter:active{transform:translateY(4px);box-shadow:0 0 0 #B45309;}
+.answer-slots{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;min-height:60px;margin:8px 0;}
+.slot{width:52px;height:58px;border-radius:14px;border:4px dashed var(--soft);display:flex;align-items:center;justify-content:center;font-size:1.6em;font-weight:bold;color:var(--purple);}
+
+/* ============ DRAG GAP / TAP WORDS ============ */
+.wordbank{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0;}
+.bankword{background:var(--teal);color:#fff;padding:10px 18px;border-radius:14px;font-weight:bold;box-shadow:0 4px 0 #0F766E;transition:transform .1s;}
+.bankword:active{transform:translateY(4px);box-shadow:0 0 0 #0F766E;}
+.gap{display:inline-block;min-width:120px;border-bottom:4px solid var(--pink);text-align:center;font-weight:bold;color:var(--pink);padding:0 6px;}
+
+/* ============ WARM UP TAP ============ */
+.tapgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:12px;}
+.tapcard{border-radius:20px;background:var(--card);border:4px solid var(--soft);padding:14px 6px;text-align:center;font-weight:bold;transition:transform .12s;}
+.tapcard .em{font-size:2.6em;display:block;}
+.tapcard:hover{transform:scale(1.05);}
+.tapcard.picked{background:var(--lime);border-color:var(--lime);color:#163b00;animation:goodpop .4s;}
+.tapcard.nope{animation:shake .4s;border-color:var(--bad);}
+
+/* ============ PRODUCTION CARDS ============ */
+.prod{display:grid;gap:14px;}
+.taskcard{border-radius:20px;padding:18px;color:#fff;position:relative;overflow:hidden;}
+.taskcard h3{margin:0 0 6px;font-size:1.3em;}
+.taskcard .em{font-size:1.6em;}
+.taskcard.c1{background:linear-gradient(135deg,var(--pink),#BE185D);}
+.taskcard.c2{background:linear-gradient(135deg,var(--teal),#0F766E);}
+.taskcard.c3{background:linear-gradient(135deg,var(--sky),#1D4ED8);}
+.taskcard.c4{background:linear-gradient(135deg,var(--coral),#BE123C);}
+.taskcard ul{margin:8px 0 0;padding-left:20px;}
+.spinbox{text-align:center;background:var(--soft);border-radius:18px;padding:16px;margin-top:10px;}
+.spinword{font-size:1.8em;font-weight:bold;color:var(--purple);min-height:1.4em;}
+.timer{font-size:2.4em;font-weight:bold;color:var(--pink);}
+
+/* ============ GRAMMAR ============ */
+.rulebox{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+@media(max-width:520px){.rulebox{grid-template-columns:1fr;}}
+.rule{border-radius:20px;padding:18px;text-align:center;color:#fff;}
+.rule.one{background:linear-gradient(135deg,var(--sky),#1D4ED8);}
+.rule.many{background:linear-gradient(135deg,var(--coral),#BE123C);}
+.rule .big{font-size:2.6em;}
+.rule .say{font-size:1.4em;font-weight:bold;background:rgba(255,255,255,.25);border-radius:12px;padding:6px;margin-top:8px;}
+
+/* ============ WHEEL / QUIZ SHOW ============ */
+.lives{font-size:1.4em;text-align:center;}
+.streak{text-align:center;font-weight:bold;color:var(--sun);}
+.quizbig{text-align:center;}
+
+/* ============ DASHBOARD ============ */
+.stars-big{font-size:2.4em;text-align:center;letter-spacing:6px;}
+.badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:10px;}
+.badge{border-radius:20px;padding:16px 10px;text-align:center;background:var(--soft);opacity:.45;filter:grayscale(.8);transition:.4s;}
+.badge.earned{opacity:1;filter:none;background:linear-gradient(135deg,var(--sun),var(--coral));color:#fff;animation:goodpop .6s;}
+.badge .em{font-size:2.6em;display:block;}
+.badge .nm{font-weight:bold;font-size:.85em;}
+.bigprog{height:26px;background:var(--soft);border-radius:999px;overflow:hidden;margin:12px 0;}
+.bigprog i{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--teal),var(--sky));width:0;transition:width .8s;}
+.cert{border:6px double var(--purple);border-radius:20px;padding:20px;text-align:center;margin-top:14px;}
+
+/* confetti */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:200;}
+.conf{position:absolute;width:10px;height:14px;opacity:.95;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-weight:bold;z-index:210;transition:transform .4s cubic-bezier(.2,1.4,.4,1);box-shadow:0 8px 24px rgba(0,0,0,.3);}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* print */
+@media print{
+  .topbar,.settings,.overlay,.navrow,#confetti,.bunting{display:none!important;}
+  .section{display:none!important;}
+  #printArea{display:block!important;}
+}
+#printArea{display:none;}
+.printlist{columns:2;gap:24px;}
+.printlist .pitem{break-inside:avoid;margin-bottom:10px;border-bottom:1px solid #ccc;padding-bottom:6px;}
+
+.center{text-align:center;}
+.muted{opacity:.75;}
+.mt{margin-top:16px;}
+</style>
+</head>
+<body>
+<div class="bunting" id="bunting" aria-hidden="true"></div>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="brand"><span class="logo">🎉</span> Festival Fun!</div>
+  <div class="top-stats">
+    <span class="chip">⭐ <span id="starCount">0</span></span>
+    <span class="chip">🏆 <span id="scoreCount">0</span></span>
+    <div class="progress-wrap" title="Lesson progress"><div class="progress-bar" id="topProg"></div></div>
+    <button class="gear" id="menuBtn" aria-label="Open lesson map">📚</button>
+    <button class="gear" id="gearBtn" aria-label="Open settings">⚙️</button>
+  </div>
+</header>
+
+<!-- SETTINGS -->
+<div class="overlay" id="overlay"></div>
+<aside class="settings" id="settings" aria-label="Settings panel">
+  <button class="closeX" id="closeSettings" aria-label="Close settings">✕</button>
+  <h3>⚙️ Settings</h3>
+
+  <span class="lab">🌗 Dark mode</span>
+  <div class="row"><button class="optbtn" data-toggle="dark">Off</button></div>
+
+  <span class="lab">🔆 High contrast</span>
+  <div class="row"><button class="optbtn" data-toggle="contrast">Off</button></div>
+
+  <span class="lab">🔤 Font size</span>
+  <div class="row">
+    <button class="optbtn" data-fs="s">A</button>
+    <button class="optbtn active" data-fs="m">A</button>
+    <button class="optbtn" data-fs="l">A</button>
+    <button class="optbtn" data-fs="xl">A</button>
+  </div>
+
+  <span class="lab">🔊 Sound effects</span>
+  <div class="row"><button class="optbtn active" data-toggle="sound">On</button></div>
+
+  <span class="lab">🎵 Music</span>
+  <div class="row"><button class="optbtn" data-toggle="music">Off</button></div>
+
+  <span class="lab">🖥️ Full screen</span>
+  <div class="row"><button class="optbtn" id="fsBtn">Enter</button></div>
+
+  <span class="lab">🖨️ Vocabulary list</span>
+  <div class="row"><button class="optbtn" id="printBtn">Print</button></div>
+
+  <span class="lab">♻️ Start over</span>
+  <div class="row"><button class="optbtn" id="resetBtn" style="border-color:var(--coral);color:var(--coral)">Reset lesson</button></div>
+</aside>
+
+<!-- LESSON MAP -->
+<aside class="navmenu" id="navmenu" aria-label="Lesson sections">
+  <button class="closeX" id="closeMenu" aria-label="Close lesson map">✕</button>
+  <h3>📚 Lesson Map</h3>
+  <p class="muted" style="margin-top:0">Tap a part to jump there. ✓ = done</p>
+  <div class="navlist" id="navlist"></div>
+</aside>
+
+<div id="confetti" aria-hidden="true"></div>
+<div id="toast" role="status"></div>
+
+<main class="stage" id="stage"></main>
+
+<!-- PRINT AREA -->
+<div id="printArea"></div>
+
+<script>
+/* ================= DATA ================= */
+const VOCAB=[
+ {w:"celebration",e:"🎉",ipa:"/ˌsel.əˈbreɪ.ʃən/",pos:"noun",def:"a happy time when people enjoy a special day",ex:"The festival is a big <b>celebration</b> with music."},
+ {w:"costume",e:"🎭",ipa:"/ˈkɒs.tjuːm/",pos:"noun",def:"special clothes that make you look like someone or something",ex:"She wears a colourful <b>costume</b> in the parade."},
+ {w:"decoration",e:"🎀",ipa:"/ˌdek.əˈreɪ.ʃən/",pos:"noun",def:"a pretty thing you put up to make a place look nice",ex:"We put a shiny <b>decoration</b> on the door."},
+ {w:"fireworks",e:"🎆",ipa:"/ˈfaɪə.wɜːks/",pos:"noun",def:"bright lights that go bang and shine in the night sky",ex:"We watch the <b>fireworks</b> at night."},
+ {w:"candle",e:"🕯️",ipa:"/ˈkæn.dəl/",pos:"noun",def:"a stick of wax with a small flame that gives light",ex:"I light a <b>candle</b> on the cake."},
+ {w:"parade",e:"🎏",ipa:"/pəˈreɪd/",pos:"noun",def:"a line of people walking through the streets to celebrate",ex:"The <b>parade</b> goes down the big street."},
+ {w:"present",e:"🎁",ipa:"/ˈprez.ənt/",pos:"noun",def:"a gift you give to someone",ex:"I give my friend a <b>present</b>."},
+ {w:"drums",e:"🥁",ipa:"/drʌmz/",pos:"noun",def:"instruments you hit to make a beat",ex:"He plays the <b>drums</b> in the band."},
+ {w:"guitar",e:"🎸",ipa:"/ɡɪˈtɑːr/",pos:"noun",def:"a music instrument with strings you play with your fingers",ex:"She plays the <b>guitar</b> and sings."},
+ {w:"special meal",e:"🍽️",ipa:"/ˈspeʃ.əl miːl/",pos:"noun",def:"a yummy dinner made for a special day",ex:"We eat a <b>special meal</b> with our family."},
+ {w:"party",e:"🥳",ipa:"/ˈpɑː.ti/",pos:"noun",def:"a fun event with friends, food and games",ex:"We have a <b>party</b> for my birthday."},
+ {w:"flag",e:"🚩",ipa:"/flæɡ/",pos:"noun",def:"cloth with colours or pictures for a country or team",ex:"We wave a <b>flag</b> in the air."},
+ {w:"bonfire",e:"🔥",ipa:"/ˈbɒn.faɪər/",pos:"noun",def:"a big outdoor fire for a celebration",ex:"We sit around the <b>bonfire</b> at night."},
+ {w:"celebrate",e:"🎊",ipa:"/ˈsel.ə.breɪt/",pos:"verb",def:"to do fun things on a special day",ex:"We <b>celebrate</b> New Year together."},
+ {w:"decorate",e:"🎨",ipa:"/ˈdek.ə.reɪt/",pos:"verb",def:"to make a place look pretty with decorations",ex:"We <b>decorate</b> the room with balloons."},
+ {w:"invite",e:"💌",ipa:"/ɪnˈvaɪt/",pos:"verb",def:"to ask someone to come to your party",ex:"I <b>invite</b> my friends to my party."},
+ {w:"wish",e:"🌟",ipa:"/wɪʃ/",pos:"verb",def:"to hope for something good",ex:"I <b>wish</b> for a happy year."},
+ {w:"carry",e:"🧺",ipa:"/ˈkær.i/",pos:"verb",def:"to hold something and take it somewhere",ex:"They <b>carry</b> the flags in the parade."}
+];
+const FEST_EMOJI=VOCAB.map(v=>v.e);
+const SECTIONS=["intro","warmup","vpres","vguided","vprod","gpres","gctrl","gfree","review","dashboard"];
+
+/* ================= STATE ================= */
+const KEY="festivalFunLesson";
+const defState=()=>({score:0,stars:0,done:{},badges:{},name:"",
+  settings:{dark:false,contrast:false,sound:true,music:false,fs:"m"}});
+let state=defState();
+try{const s=JSON.parse(localStorage.getItem(KEY)); if(s)state=Object.assign(defState(),s);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+/* ================= AUDIO ================= */
+let AC; function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+function tone(f,t,dur,vol){if(!state.settings.sound)return;const c=ac();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.value=f;o.connect(g);g.connect(c.destination);g.gain.setValueAtTime(vol||.12,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);o.start();o.stop(c.currentTime+dur);}
+function sGood(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,"triangle",.18),i*70));}
+function sBad(){tone(160,"sawtooth",.3,.08);setTimeout(()=>tone(120,"sawtooth",.3,.08),120);}
+function sClick(){tone(440,"square",.05,.05);}
+function sStar(){[880,1320,1760].forEach((f,i)=>setTimeout(()=>tone(f,"sine",.2),i*60));}
+function say(txt){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang="en-GB";u.rate=.82;u.pitch=1.1;speechSynthesis.speak(u);}catch(e){}}
+
+/* music loop */
+let musicTimer=null;
+const MEL=[392,440,494,523,494,440,392,330];
+function musicOn(){if(musicTimer)return;let i=0;musicTimer=setInterval(()=>{if(!state.settings.music)return;const c=ac();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type="triangle";o.frequency.value=MEL[i%MEL.length];o.connect(g);g.connect(c.destination);g.gain.setValueAtTime(.04,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.45);o.start();o.stop(c.currentTime+.45);i++;},460);}
+function musicOff(){}
+
+/* ================= HELPERS ================= */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick=(a,n)=>shuffle(a).slice(0,n);
+const stage=$("#stage");
+
+function updateTop(){
+  $("#scoreCount").textContent=state.score;
+  $("#starCount").textContent=state.stars;
+  const idx=SECTIONS.indexOf(current);
+  $("#topProg").style.width=Math.round(idx/(SECTIONS.length-1)*100)+"%";
+}
+function addScore(n){state.score+=n;updateTop();save();}
+function addStar(n){state.stars+=(n||1);sStar();updateTop();save();}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1800);}
+const CHEERS=["Awesome! 🌟","Brilliant! 🎉","Well done! 👏","Super! 💪","You rock! 🤩","Fantastic! ✨","Great job! 🥳"];
+const cheer=()=>CHEERS[Math.random()*CHEERS.length|0];
+const TRY=["Almost! Try again 🙂","Oops! Have another go 💛","Not yet — you can do it! 🌈"];
+const tryAgain=()=>TRY[Math.random()*TRY.length|0];
+
+function confetti(n){n=n||60;const box=$("#confetti");const cols=["#EC4899","#FBBF24","#14B8A6","#38BDF8","#7C3AED","#84CC16","#FB7185"];for(let i=0;i<n;i++){const c=document.createElement("i");c.className="conf";c.style.left=Math.random()*100+"vw";c.style.background=cols[i%cols.length];c.style.animationDuration=(2+Math.random()*2)+"s";c.style.transform="rotate("+Math.random()*360+"deg)";if(Math.random()<.4)c.style.borderRadius="50%";box.appendChild(c);setTimeout(()=>c.remove(),4000);}}
+
+function markDone(name,badge){if(!state.done[name]){state.done[name]=true;save();}if(badge)awardBadge(badge);checkFestivalStar();}
+const BADGE_META={wiz:{e:"🧠",n:"Word Wizard"},pro:{e:"🎯",n:"Practice Pro"},spk:{e:"🗣️",n:"Super Speaker"},gram:{e:"📐",n:"Grammar Guru"},champ:{e:"👑",n:"Quiz Champion"},star:{e:"🌟",n:"Festival Star"}};
+function awardBadge(b){if(state.badges[b])return;state.badges[b]=true;addStar(1);confetti(50);toast("Badge unlocked: "+BADGE_META[b].n+" "+BADGE_META[b].e);save();}
+function checkFestivalStar(){if(["wiz","pro","spk","gram","champ"].every(b=>state.badges[b]))awardBadge("star");}
+
+/* ================= NAVIGATION ================= */
+let current="intro";
+function goTo(name){current=name;window.scrollTo({top:0,behavior:"smooth"});RENDER[name]();updateTop();save();}
+function navButtons(prev,next,nextLabel){
+  return `<div class="navrow">
+    ${prev?`<button class="btn ghost" onclick="goTo('${prev}')">⬅️ Back</button>`:"<span></span>"}
+    ${next?`<button class="btn ${nextLabel?'sun':''}" onclick="goTo('${next}')">${nextLabel||"Next ➡️"}</button>`:"<span></span>"}
+  </div>`;
+}
+function header(kick,title){return `<div class="center"><span class="kicker">${kick}</span><h2>${title}</h2></div>`;}
+
+/* ================= SECTIONS ================= */
+const RENDER={};
+
+/* ---- INTRO ---- */
+RENDER.intro=()=>{
+ stage.innerHTML=`<section class="section active">
+   <div class="card hero">
+     <div class="hero-emojis"><span>🎉</span><span>🎆</span><span>🥁</span><span>🎭</span><span>🎁</span><span>🔥</span></div>
+     <h1 class="title">Festival Fun!</h1>
+     <p class="muted" style="font-size:1.2em">Learn fun words about celebrations 🌍</p>
+     <div class="objectives">
+       <div class="obj"><span class="em">🗣️</span> Say 18 festival words</div>
+       <div class="obj"><span class="em">🎮</span> Play word games and win stars</div>
+       <div class="obj"><span class="em">📐</span> Use <b>“There is / There are”</b></div>
+       <div class="obj"><span class="em">👑</span> Win the big Quiz Show!</div>
+     </div>
+     <button class="btn big pink" id="startBtn">🚀 Start Lesson</button>
+     <p class="muted mt">Tip: tap ⚙️ for dark mode, big text and more.</p>
+   </div>
+ </section>`;
+ $("#startBtn").onclick=()=>{sGood();confetti(40);goTo("warmup");};
+};
+
+/* ---- WARM-UP ---- */
+RENDER.warmup=()=>{
+ const fest=pick(VOCAB,8);
+ const distract=[{w:"toothbrush",e:"🪥"},{w:"homework",e:"📚"},{w:"sock",e:"🧦"},{w:"broom",e:"🧹"}];
+ const items=shuffle([...fest.map(v=>({...v,fest:true})),...distract.map(d=>({...d,fest:false}))]);
+ let found=0,total=fest.length;
+ stage.innerHTML=`<section class="section active">
+   ${header("Warm-up","Spot the festival things! 👀")}
+   <div class="card">
+     <p class="qtext">Tap everything you might see at a <b>festival</b> or <b>party</b>.</p>
+     <div class="tapgrid" id="tg"></div>
+     <p class="center muted mt" id="wfb">Found 0 / ${total}</p>
+   </div>
+   ${navButtons("intro","vpres","Let's learn! ➡️")}
+ </section>`;
+ const tg=$("#tg");
+ items.forEach(it=>{
+   const c=document.createElement("button");c.className="tapcard";c.innerHTML=`<span class="em">${it.e}</span>${it.w}`;
+   c.onclick=()=>{
+     if(c.classList.contains("picked"))return;
+     if(it.fest){c.classList.add("picked");sGood();found++;addScore(5);$("#wfb").textContent=`Found ${found} / ${total}`;
+       if(found===total){toast("You found them all! 🎉");confetti(40);addStar(1);}}
+     else{c.classList.add("nope");sBad();setTimeout(()=>c.classList.remove("nope"),400);toast("That one is for every day 🙂");}
+   };
+   tg.appendChild(c);
+ });
+};
+
+/* ---- VOCAB PRESENTATION ---- */
+let cardIdx=0;
+RENDER.vpres=()=>{
+ cardIdx=0;
+ stage.innerHTML=`<section class="section active">
+   ${header("Vocabulary · Look & Listen","Festival Word Cards 📇")}
+   <div class="card flash" id="flash"></div>
+   ${navButtons("warmup",null)}
+ </section>`;
+ drawCard();
+};
+function drawCard(){
+ const v=VOCAB[cardIdx];
+ $("#flash").innerHTML=`
+   <span class="pos">${v.pos}</span>
+   <div class="pic">${v.e}</div>
+   <div class="word">${v.w}</div>
+   <div class="ipa">${v.ipa}</div>
+   <button class="btn teal" onclick="say('${v.w.replace(/'/g,"")}')">🔊 Hear it</button>
+   <div class="def">${v.def}</div>
+   <div class="ex">${v.ex}</div>
+   <div class="dots">${VOCAB.map((_,i)=>`<i class="${i===cardIdx?'on':''}"></i>`).join("")}</div>
+   <div class="navrow">
+     <button class="btn ghost" ${cardIdx===0?"disabled":""} onclick="cardNav(-1)">⬅️ Prev</button>
+     <span class="muted">${cardIdx+1} / ${VOCAB.length}</span>
+     ${cardIdx<VOCAB.length-1
+        ?`<button class="btn" onclick="cardNav(1)">Next ➡️</button>`
+        :`<button class="btn sun" onclick="finishCards()">Done! Play games ➡️</button>`}
+   </div>`;
+ say(VOCAB[cardIdx].w);
+}
+window.cardNav=d=>{cardIdx=Math.max(0,Math.min(VOCAB.length-1,cardIdx+d));sClick();drawCard();};
+window.finishCards=()=>{sGood();addScore(10);markDone("vpres","wiz");confetti(40);goTo("vguided");};
+
+/* ================= GUIDED PRACTICE ENGINE ================= */
+let gp={step:0,steps:[],score:0};
+RENDER.vguided=()=>{
+ gp={step:0,score:0,steps:["match","pic2word","word2pic","listen","unscramble","gap"]};
+ stage.innerHTML=`<section class="section active">
+   ${header("Vocabulary · Practice","Word Games 🎮")}
+   <div class="card"><div class="dots" id="gpdots"></div><div id="gparea"></div></div>
+   <div id="gpnav"></div>
+ </section>`;
+ runGP();
+};
+function gpDots(){$("#gpdots").innerHTML=gp.steps.map((_,i)=>`<i class="${i<gp.step?'on':''}${i===gp.step?' on':''}"></i>`).join("");}
+function gpNext(){
+ gp.step++;
+ if(gp.step>=gp.steps.length){
+   markDone("vguided","pro");confetti(60);
+   $("#gparea").innerHTML=`<div class="center"><div class="pic" style="font-size:5rem">🏅</div><h2>You finished all the games!</h2><p class="qtext">Practice score: +${gp.score}</p></div>`;
+   $("#gpnav").innerHTML=navButtons("vpres","vprod","Now let's talk! 🗣️");
+   addStar(1);
+ } else { runGP(); }
+}
+function runGP(){
+ gpDots();
+ $("#gpnav").innerHTML="";
+ const t=gp.steps[gp.step];
+ if(t==="match")return actMatch();
+ if(t==="pic2word")return actMCQ("pic2word","Tap the correct word 👇");
+ if(t==="word2pic")return actMCQ("word2pic","Tap the correct picture 👇");
+ if(t==="listen")return actMCQ("listen","Listen, then tap the picture 👂");
+ if(t==="unscramble")return actUnscramble();
+ if(t==="gap")return actGap();
+}
+function gpContinueBtn(){
+ const b=document.createElement("button");b.className="btn sun";b.style.marginTop="14px";b.textContent="Next game ➡️";
+ b.onclick=()=>{sClick();gpNext();};
+ const wrap=document.createElement("div");wrap.className="center";wrap.appendChild(b);
+ $("#gparea").appendChild(wrap);
+}
+
+/* ---- MATCH MEMORY ---- */
+function actMatch(){
+ const pairs=pick(VOCAB,6);
+ let tiles=[];pairs.forEach((p,i)=>{tiles.push({id:i,face:p.e,kind:"e"});tiles.push({id:i,face:p.w,kind:"w"});});
+ tiles=shuffle(tiles);
+ $("#gparea").innerHTML=`<p class="qtext">Match the picture to the word 🧩</p><div class="matchgrid" id="mg"></div>`;
+ const mg=$("#mg");let first=null,lock=false,done=0;
+ tiles.forEach((t,i)=>{
+   const el=document.createElement("button");el.className="tile hidden";el.dataset.i=i;
+   el.onclick=()=>{
+     if(lock||el.classList.contains("done")||el===first)return;sClick();
+     el.classList.remove("hidden");el.classList.add("flip");
+     el.innerHTML=t.kind==="e"?t.face:`<small>${t.face}</small>`;
+     if(!first){first=el;first._t=t;return;}
+     lock=true;
+     if(first._t.id===t.id){
+       sGood();addScore(6);gp.score+=6;
+       setTimeout(()=>{first.classList.add("done");el.classList.add("done");first=null;lock=false;done++;
+         if(done===pairs.length){toast(cheer());confetti(40);gpContinueBtn();}},420);
+     } else {
+       sBad();
+       setTimeout(()=>{[first,el].forEach(x=>{x.classList.remove("flip");x.classList.add("hidden");x.innerHTML="";});first=null;lock=false;},750);
+     }
+   };
+   mg.appendChild(el);
+ });
+}
+
+/* ---- MCQ (pic2word / word2pic / listen) ---- */
+function actMCQ(mode,instr){
+ const qs=pick(VOCAB,4);let qi=0,right=0;
+ const area=$("#gparea");
+ function draw(){
+   const v=qs[qi];const others=pick(VOCAB.filter(x=>x.w!==v.w),3);
+   const opts=shuffle([v,...others]);
+   let promptHTML;
+   if(mode==="pic2word")promptHTML=`<div class="pic" style="font-size:5rem">${v.e}</div>`;
+   else if(mode==="word2pic")promptHTML=`<div class="word" style="font-size:2.2rem">${v.w}</div>`;
+   else promptHTML=`<button class="btn teal" onclick="say('${v.w.replace(/'/g,"")}')">🔊 Play word</button>`;
+   area.innerHTML=`<p class="qtext">${instr}</p><div class="center">${promptHTML}</div>
+     <p class="muted center">Question ${qi+1} / ${qs.length}</p>
+     <div class="opts" id="op"></div><div class="fb" id="fb"></div>`;
+   if(mode==="listen")setTimeout(()=>say(v.w),250);
+   const op=$("#op");
+   opts.forEach(o=>{
+     const b=document.createElement("button");b.className="opt";
+     b.innerHTML=(mode==="pic2word")?o.w:`<span class="em">${o.e}</span>${mode==="word2pic"?"":""}`;
+     b.onclick=()=>{
+       $$("#op .opt").forEach(x=>x.disabled=true);
+       if(o.w===v.w){b.classList.add("correct");sGood();right++;addScore(8);gp.score+=8;$("#fb").textContent=cheer();$("#fb").className="fb ok";}
+       else{b.classList.add("wrong");sBad();$("#fb").textContent=tryAgain();$("#fb").className="fb no";
+         op.querySelectorAll(".opt").forEach(x=>{if((mode==="pic2word"&&x.textContent===v.w)||(mode!=="pic2word"&&x.textContent.includes(v.e)))x.classList.add("correct");});}
+       setTimeout(()=>{qi++;if(qi<qs.length)draw();else finish();},1100);
+     };
+     op.appendChild(b);
+   });
+ }
+ function finish(){area.innerHTML=`<div class="center"><div class="pic" style="font-size:4rem">${right===qs.length?"🌟":"👍"}</div><h3>${right} / ${qs.length} correct!</h3></div>`;if(right===qs.length)confetti(30);gpContinueBtn();}
+ draw();
+}
+
+/* ---- UNSCRAMBLE ---- */
+function actUnscramble(){
+ const words=pick(VOCAB.filter(v=>!v.w.includes(" ")),3);let wi=0;
+ const area=$("#gparea");
+ function draw(){
+   const v=words[wi];const letters=shuffle(v.w.split(""));
+   area.innerHTML=`<p class="qtext">Build the word! ${v.e}</p>
+     <p class="muted center">Hint: ${v.def}</p>
+     <div class="answer-slots" id="slots"></div>
+     <div class="scramble" id="pool"></div>
+     <div class="fb" id="fb"></div>
+     <div class="center"><button class="btn ghost" id="clr">↩️ Clear</button> <button class="btn teal" onclick="say('${v.w}')">🔊 Hear</button></div>`;
+   const slots=$("#slots"),pool=$("#pool");let chosen=[];
+   v.w.split("").forEach(()=>{const s=document.createElement("div");s.className="slot";slots.appendChild(s);});
+   letters.forEach(L=>{const b=document.createElement("button");b.className="letter";b.textContent=L;
+     b.onclick=()=>{if(b.disabled)return;sClick();b.disabled=true;b.style.visibility="hidden";chosen.push({L,b});
+       slots.children[chosen.length-1].textContent=L;check();};
+     pool.appendChild(b);});
+   $("#clr").onclick=()=>{sClick();chosen.forEach(c=>{c.b.disabled=false;c.b.style.visibility="visible";});chosen=[];[...slots.children].forEach(s=>s.textContent="");$("#fb").textContent="";};
+   function check(){if(chosen.length!==v.w.length)return;const got=chosen.map(c=>c.L).join("");
+     if(got===v.w){sGood();addScore(10);gp.score+=10;$("#fb").textContent=cheer();$("#fb").className="fb ok";confetti(20);
+       setTimeout(()=>{wi++;wi<words.length?draw():finish();},1000);}
+     else{sBad();$("#fb").textContent=tryAgain();$("#fb").className="fb no";}}
+ }
+ function finish(){area.innerHTML=`<div class="center"><div class="pic" style="font-size:4rem">🔤✨</div><h3>Spelling star!</h3></div>`;gpContinueBtn();}
+ draw();
+}
+
+/* ---- SENTENCE GAP ---- */
+function actGap(){
+ const set=pick(VOCAB,3);let i=0;
+ const area=$("#gparea");
+ function draw(){
+   const v=set[i];const sentence=v.ex.replace(/<b>.*?<\/b>/,'<span class="gap" id="gap">____</span>');
+   const opts=shuffle([v.w,...pick(VOCAB.filter(x=>x.w!==v.w),3).map(x=>x.w)]);
+   area.innerHTML=`<p class="qtext">Tap the missing word ✍️</p>
+     <p class="ex" style="font-size:1.3em">${v.e} ${sentence}</p>
+     <div class="wordbank" id="bank"></div><div class="fb" id="fb"></div>`;
+   const bank=$("#bank");
+   opts.forEach(o=>{const b=document.createElement("button");b.className="bankword";b.textContent=o;
+     b.onclick=()=>{sClick();
+       if(o===v.w){$("#gap").textContent=o;$("#gap").style.color="var(--good)";sGood();addScore(8);gp.score+=8;
+         $("#fb").textContent=cheer();$("#fb").className="fb ok";$$("#bank .bankword").forEach(x=>x.disabled=true);
+         setTimeout(()=>{i++;i<set.length?draw():finish();},1000);}
+       else{b.style.opacity=".4";sBad();$("#fb").textContent=tryAgain();$("#fb").className="fb no";}
+     };bank.appendChild(b);});
+ }
+ function finish(){area.innerHTML=`<div class="center"><div class="pic" style="font-size:4rem">📝🌟</div><h3>Sentence superstar!</h3></div>`;gpContinueBtn();}
+ draw();
+}
+
+/* ================= PRODUCTION ================= */
+RENDER.vprod=()=>{
+ stage.innerHTML=`<section class="section active">
+   ${header("Vocabulary · Speaking","Talk Time! 🗣️")}
+   <div class="card prod">
+     <div class="taskcard c1"><h3><span class="em">👯</span> Pair work</h3>
+       <p>Talk with a friend. Ask and answer:</p>
+       <ul><li>“What do you do at a <b>party</b>?”</li><li>“Do you like <b>fireworks</b>?”</li><li>“Who do you <b>invite</b>?”</li></ul></div>
+
+     <div class="taskcard c2"><h3><span class="em">🔮</span> Describe & Guess</h3>
+       <p>Press the button. Describe the secret word. Your friend guesses!</p>
+       <div class="spinbox"><div class="spinword" id="secret">— — —</div>
+         <button class="btn sun" id="secretBtn" style="margin-top:8px">🎲 New secret word</button></div></div>
+
+     <div class="taskcard c3"><h3><span class="em">📋</span> Class survey</h3>
+       <p>Ask 3 friends: “What is your favourite festival thing?” Tick what they say:</p>
+       <div id="survey" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div></div>
+
+     <div class="taskcard c4"><h3><span class="em">⏱️</span> Speaking challenge</h3>
+       <p>Say as many festival words as you can in 30 seconds!</p>
+       <div class="center"><div class="timer" id="clock">30</div>
+       <button class="btn sun" id="goChal">▶️ Start</button></div></div>
+   </div>
+   ${navButtons("vguided","gpres","On to grammar! 📐")}
+ </section>`;
+ $("#secretBtn").onclick=()=>{const v=VOCAB[Math.random()*VOCAB.length|0];$("#secret").textContent=v.e+" "+v.w;sClick();addScore(2);};
+ const sv=$("#survey");
+ pick(VOCAB,6).forEach(v=>{const b=document.createElement("button");b.className="bankword";b.style.background="rgba(255,255,255,.25)";b.textContent=v.e+" "+v.w;
+   let c=0;b.onclick=()=>{c++;b.textContent=v.e+" "+v.w+" ("+c+")";sClick();addScore(1);};sv.appendChild(b);});
+ $("#goChal").onclick=function(){
+   let t=30;this.disabled=true;$("#clock").textContent=t;
+   const iv=setInterval(()=>{t--;$("#clock").textContent=t;if(t<=5)tone(880,"sine",.1);
+     if(t<=0){clearInterval(iv);$("#clock").textContent="🎉";confetti(40);sGood();addScore(15);addStar(1);
+       markDone("vprod","spk");toast("Speaking star! 🗣️⭐");this.disabled=false;}},1000);
+ };
+ markDone("vprod"); // opening production counts as engaged
+};
+
+/* ================= GRAMMAR PRESENTATION ================= */
+RENDER.gpres=()=>{
+ stage.innerHTML=`<section class="section active">
+   ${header("Grammar · Look","There is / There are 📐")}
+   <div class="card">
+     <p class="qtext">We use these to say what we can see! 👀</p>
+     <div class="rulebox">
+       <div class="rule one"><div class="big">🕯️</div><p>ONE thing = <b>one</b></p><div class="say">There <u>is</u> a candle.</div></div>
+       <div class="rule many"><div class="big">🕯️🕯️🕯️</div><p>MANY things = <b>more</b></p><div class="say">There <u>are</u> three candles.</div></div>
+     </div>
+     <p class="center" style="font-size:1.1em">👉 <b>is</b> for one &nbsp; • &nbsp; <b>are</b> for two or more (＋ s)</p>
+     <div class="center mt">
+       <p class="muted">Tap to hear the examples:</p>
+       <button class="btn teal" onclick="say('There is a bonfire')">🔊 There is a bonfire 🔥</button>
+       <button class="btn pink" onclick="say('There are five fireworks')" style="margin-top:8px">🔊 There are five fireworks 🎆</button>
+     </div>
+   </div>
+   ${navButtons("vprod","gctrl","Let's practise! ✏️")}
+ </section>`;
+};
+
+/* ================= GRAMMAR CONTROLLED ================= */
+RENDER.gctrl=()=>{
+ const pool=VOCAB.filter(v=>v.pos==="noun"&&!v.w.includes(" "));
+ const qs=shuffle(pool).slice(0,6).map(v=>{const n=Math.random()<.5?1:(2+(Math.random()*3|0));return {v,n};});
+ let i=0,right=0;
+ stage.innerHTML=`<section class="section active">
+   ${header("Grammar · Practice","Is or Are? 🤔")}
+   <div class="card"><div class="dots" id="gd"></div><div id="garea"></div></div>
+   <div id="gnav"></div>
+ </section>`;
+ function draw(){
+   $("#gd").innerHTML=qs.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join("");
+   const {v,n}=qs[i];const word=n===1?v.w:v.w+"s";
+   $("#garea").innerHTML=`<p class="muted center">Question ${i+1} / ${qs.length}</p>
+     <div class="center"><div class="pic" style="font-size:4rem">${v.e.repeat(Math.min(n,5))}</div>
+     <p class="qtext">There ____ ${n===1?"a "+v.w:n+" "+v.w+"s"}.</p></div>
+     <div class="opts" style="max-width:360px;margin:0 auto"><button class="opt" data-a="is">is</button><button class="opt" data-a="are">are</button></div>
+     <div class="fb" id="fb"></div>`;
+   const correct=n===1?"is":"are";
+   $$("#garea .opt").forEach(b=>b.onclick=()=>{
+     $$("#garea .opt").forEach(x=>x.disabled=true);
+     if(b.dataset.a===correct){b.classList.add("correct");sGood();right++;addScore(8);$("#fb").textContent=cheer();$("#fb").className="fb ok";say("There "+correct+" "+(n===1?"a "+v.w:n+" "+v.w+"s"));}
+     else{b.classList.add("wrong");sBad();$("#fb").textContent="It is “"+correct+"”. "+tryAgain();$("#fb").className="fb no";$$("#garea .opt").forEach(x=>{if(x.dataset.a===correct)x.classList.add("correct");});}
+     setTimeout(()=>{i++;i<qs.length?draw():finish();},1100);
+   });
+ }
+ function finish(){
+   markDone("gctrl");$("#garea").innerHTML=`<div class="center"><div class="pic" style="font-size:4rem">${right===qs.length?"🏆":"👏"}</div><h3>${right} / ${qs.length} correct!</h3></div>`;
+   if(right===qs.length){confetti(30);addStar(1);}
+   $("#gnav").innerHTML=navButtons("gpres","gfree","Make your own! 🎨");
+ }
+ draw();
+};
+
+/* ================= GRAMMAR FREE ================= */
+RENDER.gfree=()=>{
+ stage.innerHTML=`<section class="section active">
+   ${header("Grammar · Create","Make a Sentence 🎨")}
+   <div class="card">
+     <p class="qtext">Pick how many, pick a thing, and build a sentence!</p>
+     <div class="center">
+       <div style="margin:10px 0">
+         <button class="optbtn numbtn active" data-n="1">1</button>
+         <button class="optbtn numbtn" data-n="2">2</button>
+         <button class="optbtn numbtn" data-n="3">3</button>
+         <button class="optbtn numbtn" data-n="5">5</button>
+       </div>
+       <div class="wordbank" id="nounbank"></div>
+       <div class="ex" id="builtSent" style="font-size:1.5em;margin-top:14px">There is …</div>
+       <button class="btn teal mt" id="hearSent">🔊 Hear my sentence</button>
+       <button class="btn pink mt" id="keepSent">⭐ I made it!</button>
+     </div>
+     <hr style="border:none;border-top:3px dashed var(--soft);margin:20px 0">
+     <p class="qtext">✍️ Your turn — type a festival sentence:</p>
+     <div class="center">
+       <input id="freeIn" placeholder="There are fireworks!" style="width:90%;max-width:420px;padding:12px 16px;border-radius:16px;border:4px solid var(--soft);font-size:1.05em;font-family:inherit">
+       <div><button class="btn sun mt" id="checkFree">✅ Check it</button></div>
+       <div class="fb" id="freeFb"></div>
+     </div>
+   </div>
+   ${navButtons("gctrl","review","Quiz Show time! 👑")}
+ </section>`;
+ let num=1,noun=null;
+ const nb=$("#nounbank");
+ pick(VOCAB.filter(v=>v.pos==="noun"&&!v.w.includes(" ")),6).forEach(v=>{
+   const b=document.createElement("button");b.className="bankword";b.textContent=v.e+" "+v.w;
+   b.onclick=()=>{noun=v;sClick();$$("#nounbank .bankword").forEach(x=>x.style.outline="");b.style.outline="4px solid #fff";build();};
+   nb.appendChild(b);
+ });
+ $$(".numbtn").forEach(b=>b.onclick=()=>{$$(".numbtn").forEach(x=>x.classList.remove("active"));b.classList.add("active");num=+b.dataset.n;sClick();build();});
+ function build(){if(!noun){$("#builtSent").textContent="There is …";return;}
+   const sent=num===1?`There is a ${noun.w}.`:`There are ${num} ${noun.w}s.`;
+   $("#builtSent").innerHTML=`${noun.e.repeat(Math.min(num,5))} <b>${sent}</b>`;$("#builtSent")._s=sent;}
+ $("#hearSent").onclick=()=>{if($("#builtSent")._s)say($("#builtSent")._s);};
+ $("#keepSent").onclick=()=>{if(!noun){toast("Pick a thing first 🙂");return;}sGood();addScore(8);confetti(20);toast(cheer());};
+ $("#checkFree").onclick=()=>{
+   const t=$("#freeIn").value.trim().toLowerCase();
+   if(t.length<6){$("#freeFb").textContent="Write a little more 🙂";$("#freeFb").className="fb no";sBad();return;}
+   const good=/there\s+(is|are)/.test(t);
+   if(good){$("#freeFb").textContent="Perfect grammar! "+cheer();$("#freeFb").className="fb ok";sGood();confetti(30);addScore(12);addStar(1);markDone("gfree","gram");}
+   else{$("#freeFb").textContent="Great try! Start with “There is” or “There are”. 💪";$("#freeFb").className="fb no";addScore(4);markDone("gfree","gram");}
+ };
+};
+
+/* ================= REVIEW GAME : QUIZ SHOW ================= */
+RENDER.review=()=>{
+ const bank=buildQuiz();let i=0,lives=3,streak=0,correct=0;
+ stage.innerHTML=`<section class="section active">
+   ${header("Review · Game","🎪 Festival Quiz Show 👑")}
+   <div class="card quizbig">
+     <div style="display:flex;justify-content:space-between;flex-wrap:wrap">
+       <span class="chip" style="background:var(--soft);color:var(--ink)">Q <span id="qn">1</span>/${bank.length}</span>
+       <span class="lives" id="lives">❤️❤️❤️</span>
+       <span class="chip" style="background:var(--soft);color:var(--ink)">🔥 Streak <span id="stk">0</span></span>
+     </div>
+     <div id="qarea" class="mt"></div>
+   </div>
+   <div id="rnav"></div>
+ </section>`;
+ function draw(){
+   $("#qn").textContent=i+1;$("#stk").textContent=streak;
+   const q=bank[i];
+   $("#qarea").innerHTML=`<p class="qtext">${q.prompt}</p>
+     ${q.pic?`<div class="center"><div class="pic" style="font-size:4rem">${q.pic}</div></div>`:""}
+     ${q.audio?`<div class="center"><button class="btn teal" onclick="say('${q.audio}')">🔊 Play</button></div>`:""}
+     <div class="opts" id="qop"></div><div class="fb" id="qfb"></div>`;
+   if(q.audio)setTimeout(()=>say(q.audio),250);
+   shuffle(q.opts).forEach(o=>{
+     const b=document.createElement("button");b.className="opt";b.innerHTML=q.emoji?`<span class="em">${o.e}</span>`:o.t;
+     b.onclick=()=>{
+       $$("#qop .opt").forEach(x=>x.disabled=true);
+       if(o.correct){b.classList.add("correct");sGood();correct++;streak++;const pts=10+streak*2;addScore(pts);
+         $("#qfb").textContent=cheer()+" +"+pts;$("#qfb").className="fb ok";if(streak>=3)confetti(20);}
+       else{b.classList.add("wrong");sBad();streak=0;lives--;$("#lives").textContent="❤️".repeat(lives)+"🖤".repeat(3-lives);
+         $("#qfb").textContent="Oops! "+tryAgain();$("#qfb").className="fb no";
+         $$("#qop .opt").forEach(x=>{const lbl=q.emoji?x.querySelector(".em").textContent:x.textContent;const cor=q.opts.find(z=>z.correct);if((q.emoji&&lbl===cor.e)||(!q.emoji&&lbl===cor.t))x.classList.add("correct");});}
+       $("#stk").textContent=streak;
+       setTimeout(()=>{if(lives<=0)return gameOver();i++;i<bank.length?draw():win();},1200);
+     };
+     $("#qop").appendChild(b);
+   });
+ }
+ function gameOver(){
+   $("#qarea").innerHTML=`<div class="center"><div class="pic" style="font-size:4rem">💪</div><h2>Good try!</h2>
+     <p class="qtext">You got ${correct} right. Want to try again?</p></div>`;
+   $("#rnav").innerHTML=`<div class="navrow"><button class="btn ghost" onclick="goTo('gfree')">⬅️ Back</button>
+     <button class="btn pink" onclick="goTo('review')">🔁 Play again</button>
+     <button class="btn sun" onclick="goTo('dashboard')">See my stars ⭐</button></div>`;
+ }
+ function win(){
+   markDone("review","champ");confetti(120);sStar();
+   const stars=correct>=bank.length-1?3:correct>=bank.length-3?2:1;
+   if(stars===3)addStar(2); else addStar(1);
+   $("#qarea").innerHTML=`<div class="center"><div class="pic" style="font-size:5rem">👑</div><h2>You are a Festival Champion!</h2>
+     <div class="stars-big">${"⭐".repeat(stars)}${"☆".repeat(3-stars)}</div>
+     <p class="qtext">${correct} / ${bank.length} correct 🎉</p></div>`;
+   $("#rnav").innerHTML=navButtons("gfree","dashboard","My Dashboard 📊");
+ }
+ draw();
+};
+function buildQuiz(){
+ const qs=[];
+ // pic -> word
+ pick(VOCAB,4).forEach(v=>{const opts=[{t:v.w,correct:true},...pick(VOCAB.filter(x=>x.w!==v.w),3).map(x=>({t:x.w}))];
+   qs.push({prompt:"What is this?",pic:v.e,opts});});
+ // word -> pic
+ pick(VOCAB,3).forEach(v=>{const opts=[{e:v.e,correct:true},...pick(VOCAB.filter(x=>x.w!==v.w),3).map(x=>({e:x.e}))];
+   qs.push({prompt:"Which picture is “"+v.w+"”?",emoji:true,opts});});
+ // listen
+ pick(VOCAB,2).forEach(v=>{const opts=[{e:v.e,correct:true},...pick(VOCAB.filter(x=>x.w!==v.w),3).map(x=>({e:x.e}))];
+   qs.push({prompt:"Listen and choose 👂",audio:v.w,emoji:true,opts});});
+ // grammar is/are
+ [1,3].forEach(n=>{const v=VOCAB.filter(x=>x.pos==="noun"&&!x.w.includes(" "))[Math.random()*8|0];
+   qs.push({prompt:`There ____ ${n===1?"a "+v.w:n+" "+v.w+"s"}. ${v.e.repeat(Math.min(n,3))}`,
+     opts:[{t:"is",correct:n===1},{t:"are",correct:n!==1}]});});
+ // definition
+ pick(VOCAB,2).forEach(v=>{const opts=[{t:v.w,correct:true},...pick(VOCAB.filter(x=>x.w!==v.w),3).map(x=>({t:x.w}))];
+   qs.push({prompt:"Which word means: "+v.def+"?",opts});});
+ return shuffle(qs);
+}
+
+/* ================= DASHBOARD ================= */
+RENDER.dashboard=()=>{
+ const total=["vpres","vguided","vprod","gctrl","gfree","review"];
+ const doneN=total.filter(s=>state.done[s]).length;
+ const pct=Math.round(doneN/total.length*100);
+ const starShow="⭐".repeat(Math.min(state.stars,10));
+ stage.innerHTML=`<section class="section active">
+   ${header("My Progress","Learning Dashboard 📊")}
+   <div class="card center">
+     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+       <div class="chip" style="background:var(--soft);color:var(--ink);font-size:1.1em">🏆 Score: ${state.score}</div>
+       <div class="chip" style="background:var(--soft);color:var(--ink);font-size:1.1em">⭐ Stars: ${state.stars}</div>
+       <div class="chip" style="background:var(--soft);color:var(--ink);font-size:1.1em">✅ Done: ${pct}%</div>
+     </div>
+     <div class="stars-big mt">${starShow||"☆"}</div>
+     <div class="bigprog"><i style="width:${pct}%"></i></div>
+     <p class="muted">${doneN} of ${total.length} activities complete</p>
+
+     <h3 class="mt">🏅 My Badges</h3>
+     <div class="badges">
+       ${Object.entries(BADGE_META).map(([k,m])=>`<div class="badge ${state.badges[k]?'earned':''}"><span class="em">${m.e}</span><span class="nm">${m.n}</span></div>`).join("")}
+     </div>
+
+     <div class="cert mt">
+       <div style="font-size:2.4em">🎓🎉</div>
+       <h3>Certificate of Festival Fun</h3>
+       <p class="muted">This is awarded to:</p>
+       <input id="certName" value="${state.name||""}" placeholder="Type your name" style="text-align:center;font-size:1.3em;border:none;border-bottom:3px dashed var(--purple);background:transparent;color:var(--ink);font-family:inherit;padding:6px">
+       <p class="mt">for learning ${total.filter(s=>state.done[s]).length>0?"lots of":"new"} festival words! 🌟</p>
+       <button class="btn sun" id="printCert" style="margin-top:6px">🖨️ Print my list</button>
+     </div>
+   </div>
+   <div class="card">
+     <h3 class="center">🗺️ Jump to any part</h3>
+     <div class="badges">
+       ${SECTIONS.filter(s=>s!=="dashboard").map(id=>{const m=SECMETA[id];const d=state.done[id];return `<button class="badge ${d?'earned':''}" style="cursor:pointer;opacity:1;filter:none;${d?'':'background:var(--soft)'}" onclick="goTo('${id}')"><span class="em">${m.e}</span><span class="nm">${m.n}</span></button>`;}).join("")}
+     </div>
+   </div>
+   <div class="navrow">
+     <button class="btn ghost" onclick="goTo('review')">⬅️ Back</button>
+     <button class="btn pink" onclick="goTo('intro')">🏠 Home</button>
+   </div>
+ </section>`;
+ $("#certName").oninput=e=>{state.name=e.target.value;save();};
+ $("#printCert").onclick=()=>doPrint();
+ if(pct===100){confetti(80);}
+};
+
+/* ================= SETTINGS WIRING ================= */
+function applySettings(){
+ document.body.classList.toggle("dark",state.settings.dark);
+ document.body.classList.toggle("contrast",state.settings.contrast);
+ document.documentElement.className="fs-"+state.settings.fs;
+ $$("[data-toggle]").forEach(b=>{const k=b.dataset.toggle;const on=state.settings[k];b.classList.toggle("active",!!on);b.textContent=(k==="dark"||k==="contrast")?(on?"On":"Off"):(on?"On":"Off");});
+ $$("[data-fs]").forEach(b=>b.classList.toggle("active",b.dataset.fs===state.settings.fs));
+ if(state.settings.music)musicOn();
+}
+$$("[data-toggle]").forEach(b=>b.onclick=()=>{const k=b.dataset.toggle;state.settings[k]=!state.settings[k];sClick();
+  if(k==="music"&&state.settings.music){ac();musicOn();}applySettings();save();});
+$$("[data-fs]").forEach(b=>b.onclick=()=>{state.settings.fs=b.dataset.fs;sClick();applySettings();save();});
+
+const settingsEl=$("#settings"),overlay=$("#overlay");
+function openSettings(o){settingsEl.classList.toggle("open",o);overlay.classList.toggle("show",o);}
+$("#gearBtn").onclick=()=>{ac();sClick();openSettings(true);};
+$("#closeSettings").onclick=()=>{sClick();openSettings(false);};
+
+/* ===== LESSON MAP MENU ===== */
+const SECMETA={intro:{e:"🏠",n:"Home"},warmup:{e:"👀",n:"Warm-up"},vpres:{e:"📇",n:"Word Cards"},vguided:{e:"🎮",n:"Word Games"},vprod:{e:"🗣️",n:"Talk Time"},gpres:{e:"📐",n:"Grammar"},gctrl:{e:"🤔",n:"Is or Are?"},gfree:{e:"🎨",n:"Make Sentences"},review:{e:"👑",n:"Quiz Show"},dashboard:{e:"📊",n:"Dashboard"}};
+const navmenuEl=$("#navmenu");
+function closeAllPanels(){settingsEl.classList.remove("open");navmenuEl.classList.remove("open");overlay.classList.remove("show");}
+function renderNavMenu(){
+  $("#navlist").innerHTML=SECTIONS.map((id,i)=>{
+    const m=SECMETA[id],done=state.done[id],isnow=id===current;
+    return `<button class="navitem ${isnow?'now':''} ${done?'done':''}" data-go="${id}">
+      <span class="ne">${m.e}</span><span class="nn">${i+1}. ${m.n}</span>${done?'<span class="nck">✓</span>':(isnow?'<span class="nck" style="color:var(--pink)">▶</span>':'')}</button>`;
+  }).join("");
+  $$("#navlist .navitem").forEach(b=>b.onclick=()=>{sClick();closeAllPanels();goTo(b.dataset.go);});
+}
+function openMenu(){renderNavMenu();navmenuEl.classList.add("open");overlay.classList.add("show");}
+$("#menuBtn").onclick=()=>{ac();sClick();openMenu();};
+$("#closeMenu").onclick=()=>{sClick();closeAllPanels();};
+overlay.onclick=closeAllPanels;
+
+$("#fsBtn").onclick=function(){sClick();if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();this.textContent="Exit";}else{document.exitFullscreen&&document.exitFullscreen();this.textContent="Enter";}};
+$("#printBtn").onclick=()=>doPrint();
+$("#resetBtn").onclick=()=>{if(confirm("Start the whole lesson again? Your stars will be reset.")){const set=state.settings;state=defState();state.settings=set;save();openSettings(false);goTo("intro");toast("Fresh start! 🌈");}};
+
+/* PRINT VOCAB LIST */
+function doPrint(){
+ $("#printArea").innerHTML=`<h1 style="text-align:center">🎉 Festival Fun — Word List</h1>
+   ${state.name?`<p style="text-align:center">Name: <b>${state.name}</b></p>`:""}
+   <div class="printlist">${VOCAB.map(v=>`<div class="pitem"><b>${v.e} ${v.w}</b> <i>(${v.pos})</i><br>${v.def}<br><small>e.g. ${v.ex.replace(/<\/?b>/g,'')}</small></div>`).join("")}</div>`;
+ window.print();
+}
+
+/* bunting build */
+(function(){const b=$("#bunting");for(let i=0;i<40;i++){b.appendChild(document.createElement("i"));}})();
+
+/* INIT */
+applySettings();
+updateTop();
+goTo("intro");
+
+</script>
+</body>
+</html>
